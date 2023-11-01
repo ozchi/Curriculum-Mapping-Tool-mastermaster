@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="/javascripts/main.js" defer></script>
+        <script src="/javascripts/edit_things.js" defer></script>
+        <meta charset="UTF-8">
+        <title>Edit Course</title>
+    </head>
+    <body>
+        <div id="mainDiv">
+            <form>
+                <div class="center content">
+                    <!-- target course selection -->
+                    <div id="streamSelection">
+                        <label for="stream_id">Course stream: </label>
+                        <select name="stream" id="stream_id" v-model="sid" @change="formStreamChange()">
+                            <option :value="-1" disabled hidden> </option>
+                            <option v-for="stream in stream" :value="stream.stream_id"> {{ stream.stream_name }}</option>
+                        </select><br><br>
+                    </div>
+
+                    <div id="courseSelection">
+                        <template v-if="sid !== -1">
+                            <label for="course_code">Course code and name: </label>
+                            <select name="course_id" id="course_id" v-model="cid"  @change="getCourseID()">
+                                <option :value="-1" disabled hidden> </option>
+                                <option v-for="cs in courseCode" :value="cs.course_id">{{ cs.course_code }} {{ cs.course_name }}</option>
+                            </select>
+                        </template>
+                    </div>
+                    <br><br>
+                    <!-- Associated Degree -->
+                    <!-- <label for="degree">Degree: </label>
+                    <select name="degree" id="degree">
+                        <option v-for="degree in degree" :value="degree.degree_id">{{ level[degree.level].level_type }} {{ level[degree.level].level_prefix }} {{ degree.name_suffix }}</option>
+                    </select>
+                    <br><br> -->
+                    <!-- Course Type -->
+                    <!-- <label>Course Type: </label>
+                    <input type="checkbox" id="core"><label for="core"> Core</label>
+                    <input type="checkbox" id="elective"><label for="elective"> Elective</label>
+                    <input type="checkbox" id="project"><label for="project"> Project</label>
+                    <br><br> -->
+                    <template v-if="cid !== -1">
+                        <!-- Course Name -->
+                        <label for="course_name">Course name: </label>
+                        <input type="text" id="course_name" :value="courseCode[courseID].course_name">
+                        <br><br>
+                        <!-- Course Link href -->
+                        <label for="courselink_href">Course Link: </label>
+                        <input type="text" id="courselink_href" :value="courseCode[courseID].courselink_href">
+                        <br><br>
+                        <!-- Units -->
+                        <label for="units"> Units: </label>
+                        <select name="units" id="units">
+                            <option :value="-1" selected disabled hidden></option>
+                            <option v-for="u in unit" :value="u"> {{ u }}</option>
+                        </select>
+                        (Current value: {{ courseCode[courseID].units }})
+                        <br><br>
+                        <!-- Terms -->
+                        <label for="terms"> Available Term(s): </label>
+                        <select name="terms" id="terms">
+                            <option :value="-1" selected disabled hidden></option>
+                            <template v-for="term in term">
+                                <option :value="term.t" v-if="term.t > 0"> {{ term.s }}</option>
+                            </template>
+                        </select>
+                        (Current value: {{ term[courseCode[courseID].term].s }})
+                        <br><br>
+                        <!-- Pre-requisite -->
+                        <!-- <label for="PR_stream_id">Pre-requisite course: </label>
+                        <select name="stream" id="PR_stream_id">
+                            <option v-for="stream in stream" :value="stream.stream_id"> {{ stream.stream_name }}</option>
+                        </select>   
+                        <input type="text" id="PR_course_code">
+                        <br><br> -->
+                        <!-- Incompatible -->
+                        <!-- <label for="IN_stream_id">Incompatible course: </label>
+                        <select name="stream" id="IN_stream_id">
+                            <option v-for="stream in stream" :value="stream.stream_id"> {{ stream.stream_name }}</option>
+                        </select>   
+                        <input type="text" id="IN_course_code">
+                        <br><br> -->
+                        <!-- Confirm button -->
+                        <button type="button" onclick="commitEditCourse()">Update course</button> 
+                        <button type="reset">Reset</button>
+                    </template>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
